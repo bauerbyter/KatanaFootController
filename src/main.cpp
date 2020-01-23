@@ -1,9 +1,17 @@
 #include <Arduino.h>
+#include <MS3.h>
+#include <MIDI.h>
+
+MS3 Katana;
 
 void setup() {
-  // put your setup code here, to run once:
+  Katana.begin();
+  //Change Ms3 Header
+  //
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  //CHECK BUTTONS
+  // Recieve Data
+  //Write Display
 }
