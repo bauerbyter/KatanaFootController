@@ -1,19 +1,22 @@
-    #ifndef CONTROL_H
-    #define CONTROL_H
-    #include <Arduino.h>
-    
-    class Control {
-      
-      private:
-        //byte pin;
-        
-        
-      public:
-        Control();
-        Control(int id, int pin, String command, bool toggle);
-        void init();
-        void wasPressed();
-        void sendCommand();
+#ifndef CONTROL_H
+#define CONTROL_H
 
-    };
-    #endif
+#include <Arduino.h>
+#include <JC_Button.h>
+#include "MS3.h"
+
+// Todo: maybe inherit Togglecontrol from Control, think also about expresssionpedal.
+class Control
+{
+
+private:
+  byte pin;
+  unsigned long address;
+  ToggleButton *button;
+  MS3 *katana;
+
+public:
+  Control(MS3 *katana, int pin, unsigned long address);
+  void update();
+};
+#endif

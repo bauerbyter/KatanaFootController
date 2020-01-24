@@ -1,9 +1,8 @@
-    #ifndef CONTROL_H
-    #define CONTROL_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
-    #include <Arduino.h>
-    
-    static const uint32_t PC =     0x60000140; //Todo
+#include <Arduino.h>
 
 
-    #endif
+
+#endif
