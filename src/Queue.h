@@ -2,7 +2,7 @@
 #define MS3_Queue_h
 
 #include "Arduino.h"
-#include "MS3.h"
+
 
 typedef struct {
     unsigned long address;
