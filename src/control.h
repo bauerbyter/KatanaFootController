@@ -14,6 +14,7 @@ private:
   unsigned long address;
   ToggleButton *button;
   MS3 *katana;
+  void printStatus(int value);
 
 public:
   Control(MS3 *katana, int pin, unsigned long address);

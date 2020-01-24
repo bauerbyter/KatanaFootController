@@ -5,10 +5,22 @@
 #include "MS3.h"
 
 void setupKatana();
+void updateKatana();
+void reconnectKatana();
 
 #endif
 
 /*
+- Katana Maintainence
+- Debug
+- Togglebutton / normal button / Exp
+- LEDs
+- Also allow to send midi 
+- Long Press
+
+
+
+
 unsigned long parameter = 0;
   uint8_t data = 0;
   bool changed = false;

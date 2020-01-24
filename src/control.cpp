@@ -3,9 +3,8 @@ Control::Control(MS3 *katana, int pin, unsigned long address)
 {
   this->pin = pin;
   this->address = address;
-  this->button = new ToggleButton(this->pin, false, 25, false, false); 
+  this->button = new ToggleButton(this->pin, false, 25, false, false);
   this->katana = katana;
-
 }
 
 void Control::update()
@@ -16,14 +15,23 @@ void Control::update()
   {
     if (button->toggleState())
     {
-      Serial.println("Button on");
-      katana->write(address, 1,1);
+      katana->write(address, 1, 1);
+      this->printStatus(1);
     }
     else
     {
-      Serial.println("Button off");
-      katana->write(address, 0,1);
+      katana->write(address, 0, 1);
+      this->printStatus(0);
     }
   }
 }
 
+void Control::printStatus(int value)
+{
+  Serial.print("Button on Pin ");
+  Serial.print(this->pin);
+  Serial.print(" Send: ");
+  Serial.print(this->address, HEX);
+  Serial.print(" with ");
+  Serial.println(value, HEX);
+}
