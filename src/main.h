@@ -2,21 +2,13 @@
 #define MAIN_H
 
 #include <Arduino.h>
-#include "MS3.h"
+#include <NeoPixelBrightnessBus.h>
 
 void setupKatana();
 void updateKatana();
 void reconnectKatana();
 void handleIncomingData(unsigned long parameter, byte data);
+void getKatanaStatus(bool notPC);
+void setLED(int position, RgbColor color);
 
 #endif
-
-/*
-- Katana Maintainence
-- Debug
-- Togglebutton / normal button / Exp
-- LEDs
-- Also allow to send midi 
-- Long Press
-
-*/
