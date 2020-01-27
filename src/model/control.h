@@ -8,6 +8,7 @@ enum commandType
 {
   PC,
   CC,
+  BANK,
 };
 
 struct Command

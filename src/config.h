@@ -19,7 +19,8 @@
 #define WARNING_LED RgbColor(255, 0, 0)
 
 #define PC_A_ON RgbColor(0, 0, 255)
-#define PC_B_ON RgbColor(0, 200, 200)
+#define PC_B_ON RgbColor(200, 0, 200)
+#define BANK_ON RgbColor(200, 0, 200)
 
 
 

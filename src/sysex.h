@@ -5,6 +5,7 @@
 
 static const unsigned long W_PC =               0x00010000;
 static const unsigned long R_PATCH =            0x00010000;
+static const unsigned long R_PATCH_NAME =       0x00000000;
 
 static const unsigned long BOOSTER =            0x60000010;
 static const unsigned long MOD =                0x60000100;

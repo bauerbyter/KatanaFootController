@@ -58,7 +58,7 @@ bool Switch::changed()
   {
     return button->wasPressed();
   }
-  else
+  else if (this->command.type == CC || this->command.type == BANK)
   {
     if (button->wasPressed())
     {
@@ -99,7 +99,6 @@ Latch::Latch(int pin,
              Command command,
              byte ledPosition) : Switch(pin, command, ledPosition)
 {
-  this->button = new Button(this->pin, DEBOUNCE_MS, INTERNAL_PULLUP, SWITCH_PULLUP);
 }
 
 bool Latch::changed()
