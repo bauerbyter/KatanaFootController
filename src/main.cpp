@@ -9,7 +9,6 @@
 #include <NeoPixelBrightnessBus.h>
 
 MS3 katana;
-NeoPixelBrightnessBus<NeoRgbFeature, Neo800KbpsMethod> strip(6, 6);
 
 Switch control1 = Switch(2, Command{PC, W_PC, R_PATCH, 0x01, 0x01, 2}, 0);
 Switch control2 = Switch(3, Command{PC, W_PC, R_PATCH, 0x02, 0x02, 2}, 1);
@@ -19,9 +18,11 @@ Switch control5 = Switch(A1, Command{CC, MOD, MOD_LED, 0x00, 0x01, 1}, 4);
 //Switch control6 = Switch(A2, Command{CC, FX, FX_LED, 0x00, 0x01, 1}, 5);
 Switch control6 = Switch(A2, Command{BANK, 0, 0, 0x00, 0x01, 1}, 5);
 //Latch control6 = Latch(A2, Command{CC, PREAMP_BOOST, FX_LED, 0x00, 0x01, 1}, 5);
-Exp control7 = Exp(A3, Command{CC, FOOT_VOLUME, FX_LED, 100, 0x00, 1}, 6);
+Exp control7 = Exp(A3, Command{CC, FOOT_VOLUME, FX_LED, 100, 0x00, 1}, -1); //-1 LED = no LED
 
 #define CONTROL_SIZE 7
+
+NeoPixelBrightnessBus<NeoRgbFeature, Neo800KbpsMethod> strip(CONTROL_SIZE, LED_PIN);
 
 Control *controller[CONTROL_SIZE] = {
     &control1,
@@ -174,8 +175,11 @@ void handleIncomingData(unsigned long parameter, byte data)
 
 void setLED(int position, RgbColor color)
 {
-  strip.SetPixelColor(position, color);
-  strip.Show();
+  if (position >= 0)
+  {
+    strip.SetPixelColor(position, color);
+    strip.Show();
+  }
 }
 
 void setAllLeds(RgbColor color)

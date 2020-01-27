@@ -3,7 +3,9 @@
 
 #include <Arduino.h>
 
-#define MIDI_CHANNEL 1
+//#define MIDI_CHANNEL 1
+
+#define LED_PIN 6
 
 #define LED_BRIGHTNESS 50
 #define DEBOUNCE_MS 25
