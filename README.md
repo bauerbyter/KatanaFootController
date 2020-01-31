@@ -6,6 +6,20 @@ It is possibel to config every switch to whatever function you like.
 
 At the moment this is just for the MK2 (mkii), but its easy changeable to MK1 (mki).
 
+## Status
+### Working
+- Change Channel
+- Bank A/B
+- Switch on/off Effect (also get Effect-Type/Color)
+- Solo Boost
+- Send/Return on/off
+
+### Missing
+- Switch Effect Type (red/green/yellow)
+- Mute
+- Tap
+- Exp-Pedal enhancement
+
 ## Other Sources
 ### Code
 To be very clear: I just adapted code from other people and just wrote some little code around it to fit my needs. Thanks a lot to the guys from VGuitar Forum and these github repos.
