@@ -3,7 +3,6 @@
 #include "sysex.h"
 #include "config.h"
 #include "./model/model.h"
-#include "controller.h"
 //#define MS3_DEBUG_MODE
 #include "./libs/MS3.h"
 #include <JC_Button.h>
