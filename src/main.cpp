@@ -3,13 +3,13 @@
 #include "sysex.h"
 #include "config.h"
 #include "./model/model.h"
-#define MS3_DEBUG_MODE
+//#define MS3_DEBUG_MODE
 #include "./libs/MS3.h"
 #include <JC_Button.h>
 #include <NeoPixelBrightnessBus.h>
 
 MS3 katana;
-//This has to be here and not in the object, the PULLUP is not working then.
+//Todo: This has to be here and not in the object, the PULLUP is not working then.
 Button button1(29, DEBOUNCE_MS);
 Button button2(33, DEBOUNCE_MS);
 Button button3(26, DEBOUNCE_MS);
@@ -36,11 +36,11 @@ Switch control7 = Switch(&button7, Command{EFFECT, MOD, MOD_LED, 0x00, 0x01, 1},
 Switch control8 = Switch(&button8, Command{EFFECT, FX, FX_LED, 0x00, 0x01, 1}, 7);
 Switch control9 = Switch(&button9, Command{EFFECT, DELAY, DELAY_LED, 0x00, 0x01, 1}, 6);
 Switch control10 = Switch(&button10, Command{EFFECT, REVERB, REVERB_LED, 0x00, 0x01, 1}, 5);
-Switch control11 = Switch(&button11, Command{BANK, 0x00, 0x00, 0x00, 0x01, 1}, 10);
-Switch control12 = Switch(&button12, Command{CC, 0x00, 0x00, 0x00, 0x01, 1}, 11);
-Switch control13 = Switch(&button13, Command{CC, 0x00, 0x00, 0x00, 0x01, 1}, 12);
+Switch control11 = Switch(&button11, Command{BANK, 0xFF, 0xFF, 0x00, 0x01, 1}, 10); //0xFF = not used
+Switch control12 = Switch(&button12, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 11);
+Switch control13 = Switch(&button13, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 12);
 Switch control14 = Switch(&button14, Command{CC, LOOP, LOOP, 0x00, 0x01, 1}, 13);
-Switch control15 = Switch(&button15, Command{CC, 0x00, 0x00, 0x00, 0x01, 1}, 14); //TODO: color for other CC. TYPE FX and CCk
+Switch control15 = Switch(&button15, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 14);
 
 #define CONTROL_SIZE 15
 
@@ -75,7 +75,7 @@ void setup()
   strip.SetBrightness(LED_BRIGHTNESS);
   strip.Show();
 
-  //Think about better solution, Issue in JC_Button?
+  //Todo: Think about better solution, Issue in JC_Button?
   pinMode(29, INPUT_PULLUP);
   pinMode(33, INPUT_PULLUP);
   pinMode(26, INPUT_PULLUP);
