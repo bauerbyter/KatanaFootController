@@ -29,6 +29,7 @@ To be very clear: I just adapted code from other people and just wrote some litt
 - https://github.com/MrHaroldA/MS3 - This library is slightly modified and copied
 - https://github.com/sixeight7/VController_v3 - Super advanced Midi Controller (also for the Katana) with huge amount of functionality.
 - https://sourceforge.net/u/gumtownbassman/profile/ - Gumtown helped me a lot with the SYSEX Messages for the MK2
+- https://github.com/snhirsch/katana-midi-bridge/ - This helped me a lot to understandt whats going on with SYSEX
 
 ### Casing
 - Font: https://www.1001freefonts.com/japanese-3017.font
