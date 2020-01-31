@@ -16,7 +16,7 @@ To be very clear: I just adapted code from other people and just wrote some litt
 - https://github.com/sixeight7/VController_v3 - Super advanced Midi Controller (also for the Katana) with huge amount of functionality.
 - https://sourceforge.net/u/gumtownbassman/profile/ - Gumtown helped me a lot with the SYSEX Messages for the MK2
 
-# Casing
+### Casing
 - Font: https://www.1001freefonts.com/japanese-3017.font
 - Box: https://www.festi.info/boxes.py/UnevenHeightBox?language=en 
 
@@ -25,4 +25,9 @@ To be very clear: I just adapted code from other people and just wrote some litt
 - USB Host Shield / Breakout Board
 - WS2812 / Neopixel in 12mm
 - Switches (I am using these: https://www.thomann.de/de/tad_footswitch_momentary_spst.htm)
+- Optional: https://www.thomann.de/de/neutrik_nausb_b.htm
+
+## Pics
+![Alt text](images/Image_top.jpg?raw=true "Top")
+![Alt text](images/images_switches.jpg?raw=true "Switches")
 
