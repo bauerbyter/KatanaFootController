@@ -3,24 +3,46 @@
 #include <sysex.h>
 #include "config.h"
 #include <./model/control.h>
-//#define MS3_DEBUG_MODE
+#define MS3_DEBUG_MODE
 #include "./libs/MS3.h"
 #include <JC_Button.h>
 #include <NeoPixelBrightnessBus.h>
 
 MS3 katana;
+//This has to be here and not in the object, the PULLUP is not working then.
+Button button1(29, 50);
+Button button2(33, 50);
+Button button3(26, 50);
+Button button4(36, 50);
+Button button5(39, 50);
+Button button6(38, 50);
+Button button7(37, 50);
+Button button8(23, 50);
+Button button9(22, 50);
+Button button10(25, 50);
+Button button11(32, 50);
+Button button12(28, 50);
+Button button13(30, 50);
+Button button14(27, 50);
+Button button15(31, 50);
 
-Switch control1 = Switch(2, Command{PC, W_PC, R_PATCH, 0x01, 0x01, 2}, 0);
-Switch control2 = Switch(3, Command{PC, W_PC, R_PATCH, 0x02, 0x02, 2}, 1);
-Switch control3 = Switch(4, Command{PC, W_PC, R_PATCH, 0x03, 0x03, 2}, 2);
-Switch control4 = Switch(A0, Command{CC, BOOSTER, BOOSTER_LED, 0x00, 0x01, 1}, 3);
-Switch control5 = Switch(A1, Command{CC, MOD, MOD_LED, 0x00, 0x01, 1}, 4);
-//Switch control6 = Switch(A2, Command{CC, FX, FX_LED, 0x00, 0x01, 1}, 5);
-Switch control6 = Switch(A2, Command{BANK, 0, 0, 0x00, 0x01, 1}, 5);
-//Latch control6 = Latch(A2, Command{CC, PREAMP_BOOST, FX_LED, 0x00, 0x01, 1}, 5);
-Exp control7 = Exp(A3, Command{CC, FOOT_VOLUME, FX_LED, 100, 0x00, 1}, -1); //-1 LED = no LED
+Switch control1 = Switch(&button1, Command{PC, W_PC, R_PATCH, 0x01, 0x01, 2}, 0);
+Switch control2 = Switch(&button2, Command{PC, W_PC, R_PATCH, 0x02, 0x02, 2}, 1);
+Switch control3 = Switch(&button3, Command{PC, W_PC, R_PATCH, 0x03, 0x03, 2}, 2);
+Switch control4 = Switch(&button4, Command{PC, W_PC, R_PATCH, 0x04, 0x04, 2}, 3);
+Latch control5 = Latch(&button5, Command{CC, PREAMP_BOOST, PREAMP_BOOST, 0x00, 0x01, 1}, 4); //TODO doesnt work right
+Switch control6 = Switch(&button6, Command{CC, BOOSTER, BOOSTER_LED, 0x00, 0x01, 1}, 9);
+Switch control7 = Switch(&button7, Command{CC, MOD, MOD_LED, 0x00, 0x01, 1}, 8);
+Switch control8 = Switch(&button8, Command{CC, FX, FX_LED, 0x00, 0x01, 1}, 7);
+Switch control9 = Switch(&button9, Command{CC, DELAY, DELAY_LED, 0x00, 0x01, 1}, 6);
+Switch control10 = Switch(&button10, Command{CC, REVERB, REVERB_LED, 0x00, 0x01, 1}, 5);
+Switch control11 = Switch(&button11, Command{BANK, 0x00, 0x00, 0x00, 0x01, 1}, 10);
+Switch control12 = Switch(&button12, Command{CC, 0x00, 0x00, 0x00, 0x01, 1}, 11);
+Switch control13 = Switch(&button13, Command{CC, 0x00, 0x00, 0x00, 0x01, 1}, 12);
+Switch control14 = Switch(&button14, Command{CC, LOOP, LOOP, 0x00, 0x01, 1}, 13);
+Switch control15 = Switch(&button15, Command{CC, 0x00, 0x00, 0x00, 0x01, 1}, 14); //TODO: color for other CC. TYPE FX and CCk
 
-#define CONTROL_SIZE 7
+#define CONTROL_SIZE 15
 
 NeoPixelBrightnessBus<NeoRgbFeature, Neo800KbpsMethod> strip(CONTROL_SIZE, LED_PIN);
 
@@ -32,6 +54,14 @@ Control *controller[CONTROL_SIZE] = {
     &control5,
     &control6,
     &control7,
+    &control8,
+    &control9,
+    &control10,
+    &control11,
+    &control12,
+    &control13,
+    &control14,
+    &control15
 
 };
 
@@ -44,6 +74,23 @@ void setup()
   strip.Begin();
   strip.SetBrightness(LED_BRIGHTNESS);
   strip.Show();
+
+  //Think about better solution, Issue in JC_Button?
+  pinMode(29, INPUT_PULLUP);
+  pinMode(33, INPUT_PULLUP);
+  pinMode(26, INPUT_PULLUP);
+  pinMode(36, INPUT_PULLUP);
+  pinMode(39, INPUT_PULLUP);
+  pinMode(38, INPUT_PULLUP);
+  pinMode(37, INPUT_PULLUP);
+  pinMode(23, INPUT_PULLUP);
+  pinMode(22, INPUT_PULLUP);
+  pinMode(25, INPUT_PULLUP);
+  pinMode(32, INPUT_PULLUP);
+  pinMode(28, INPUT_PULLUP);
+  pinMode(30, INPUT_PULLUP);
+  pinMode(27, INPUT_PULLUP);
+  pinMode(31, INPUT_PULLUP);
 
   setupKatana();
 
@@ -76,6 +123,10 @@ void loop()
       else
       {
         katana.write(tempCommand.address, controller[i]->getValue(), tempCommand.valueSize);
+        if (tempCommand.address == LOOP || tempCommand.address == PREAMP_BOOST) //TODO
+        {
+          katana.read(tempCommand.address, 1);
+        }
       }
     }
   }
@@ -92,7 +143,6 @@ void getKatanaStatus(bool notPC)
     {
       katana.read(tempCommand.readAddress, tempCommand.valueSize);
     }
-    //katana.read(R_PATCH_NAME, 1);
   }
 }
 

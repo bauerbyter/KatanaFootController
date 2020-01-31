@@ -2,6 +2,7 @@
 #define CONTROL_H
 
 #include <Arduino.h>
+#include <JC_Button.h>
 #include "config.h"
 
 enum commandType
@@ -25,13 +26,13 @@ class Control
 {
 
 protected:
-  byte pin;
+  Button *button;
   byte value;
   Command command;
   byte ledPosition;
 
 public:
-  Control(int pin, Command command, byte ledNumber);
+  Control(Button *button, Command command, byte ledNumber);
 
   byte getValue();
   Command getCommand();
@@ -53,11 +54,9 @@ public:
 class Switch : public Control
 {
 
-protected:
-  Button *button;
 
 public:
-  Switch(int pin, Command command, byte ledNumber);
+  Switch(Button *button, Command command, byte ledNumber);
 
   virtual bool changed() override;
   virtual void updateValue(byte value) override;
@@ -74,10 +73,9 @@ class Latch : public Switch
 {
 
 protected:
-  Button *button;
 
 public:
-  Latch(int pin, Command command, byte ledNumber);
+  Latch(Button *button, Command command, byte ledNumber);
 
   virtual bool changed() override;
   virtual void updateValue(byte value) override;
@@ -95,7 +93,7 @@ class Exp : public Control
 {
 
 public:
-  Exp(int pin, Command command, byte ledNumber);
+  Exp(Button *button, Command command, byte ledNumber);
 
   bool changed() override;
   void updateValue(byte value) override;

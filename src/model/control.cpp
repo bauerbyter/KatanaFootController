@@ -1,9 +1,9 @@
 #include "control.h"
-Control::Control(int pin,
+Control::Control(Button *button,
                  Command command,
                  byte ledPosition)
 {
-  this->pin = pin;
+  this->button = button;
   this->command = command;
   this->ledPosition = ledPosition;
   this->value = command.startValue;
@@ -44,11 +44,11 @@ void Control::updateValue(byte value)
 //---------------------------------------------------------------------
 //#include "control.h"
 
-Switch::Switch(int pin,
+Switch::Switch(Button *button,
                Command command,
-               byte ledPosition) : Control(pin, command, ledPosition)
+               byte ledPosition) : Control(button, command, ledPosition)
 {
-  this->button = new Button(this->pin, DEBOUNCE_MS, INTERNAL_PULLUP, SWITCH_PULLUP);
+  //this->button = new Button(this->pin, DEBOUNCE_MS, INTERNAL_PULLUP, SWITCH_PULLUP);
 }
 
 bool Switch::changed()
@@ -95,9 +95,9 @@ void Switch::updateValue(byte value)
 //---------------------------------------------------------------------
 //#include "control.h"
 
-Latch::Latch(int pin,
+Latch::Latch(Button *button,
              Command command,
-             byte ledPosition) : Switch(pin, command, ledPosition)
+             byte ledPosition) : Switch(button, command, ledPosition)
 {
 }
 
@@ -107,11 +107,13 @@ bool Latch::changed()
 
   if (button->wasPressed())
   {
+    Serial.println("Latch was pressed");
     this->value = this->command.endValue;
     return true;
   }
   else if (button->wasReleased())
   {
+    Serial.println("Latch was released");
     this->value = this->command.startValue;
     return true;
   }
@@ -133,15 +135,16 @@ void Latch::updateValue(byte value)
 //---------------------------------------------------------------------
 //#include "control.h"
 
-Exp::Exp(int pin,
+Exp::Exp(Button *button,
          Command command,
-         byte ledPosition) : Control(pin, command, ledPosition)
+         byte ledPosition) : Control(button, command, ledPosition)
 {
 }
 
 bool Exp::changed()
 {
-  int incomingValue = analogRead(this->pin);
+  int incomingValue = 100; //TODO !!!!!
+  //int incomingValue = analogRead(this->pin);
   incomingValue = map(incomingValue, 0, 1023, 0, 100);
   incomingValue = constrain(incomingValue, 0, 100);
 

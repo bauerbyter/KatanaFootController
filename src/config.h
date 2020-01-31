@@ -7,7 +7,7 @@
 
 #define LED_PIN 6
 
-#define LED_BRIGHTNESS 50
+#define LED_BRIGHTNESS 30
 #define DEBOUNCE_MS 25
 #define SWITCH_PULLUP false
 #define INTERNAL_PULLUP false
