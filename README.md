@@ -17,9 +17,8 @@ https://github.com/sixeight7/VController_v3
 https://sourceforge.net/u/gumtownbassman/profile/
 
 # Casing
-
-Font: https://www.1001freefonts.com/japanese-3017.font
-Box: https://www.festi.info/boxes.py/UnevenHeightBox?language=en 
+- Font: https://www.1001freefonts.com/japanese-3017.font
+- Box: https://www.festi.info/boxes.py/UnevenHeightBox?language=en 
 
 ## Material
 - Arduino Mega (or clone)
