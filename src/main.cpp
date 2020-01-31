@@ -1,30 +1,31 @@
 #include <Arduino.h>
-#include <main.h>
-#include <sysex.h>
+#include "main.h"
+#include "sysex.h"
 #include "config.h"
-#include <./model/control.h>
-#define MS3_DEBUG_MODE
+#include "./model/model.h"
+#include "controller.h"
+//#define MS3_DEBUG_MODE
 #include "./libs/MS3.h"
 #include <JC_Button.h>
 #include <NeoPixelBrightnessBus.h>
 
 MS3 katana;
 //This has to be here and not in the object, the PULLUP is not working then.
-Button button1(29, 50);
-Button button2(33, 50);
-Button button3(26, 50);
-Button button4(36, 50);
-Button button5(39, 50);
-Button button6(38, 50);
-Button button7(37, 50);
-Button button8(23, 50);
-Button button9(22, 50);
-Button button10(25, 50);
-Button button11(32, 50);
-Button button12(28, 50);
-Button button13(30, 50);
-Button button14(27, 50);
-Button button15(31, 50);
+Button button1(29, DEBOUNCE_MS);
+Button button2(33, DEBOUNCE_MS);
+Button button3(26, DEBOUNCE_MS);
+Button button4(36, DEBOUNCE_MS);
+Button button5(39, DEBOUNCE_MS);
+Button button6(38, DEBOUNCE_MS);
+Button button7(37, DEBOUNCE_MS);
+Button button8(23, DEBOUNCE_MS);
+Button button9(22, DEBOUNCE_MS);
+Button button10(25, DEBOUNCE_MS);
+Button button11(32, DEBOUNCE_MS);
+Button button12(28, DEBOUNCE_MS);
+Button button13(30, DEBOUNCE_MS);
+Button button14(27, DEBOUNCE_MS);
+Button button15(31, DEBOUNCE_MS);
 
 Switch control1 = Switch(&button1, Command{PC, W_PC, R_PATCH, 0x01, 0x01, 2}, 0);
 Switch control2 = Switch(&button2, Command{PC, W_PC, R_PATCH, 0x02, 0x02, 2}, 1);
@@ -238,10 +239,6 @@ void setAllLeds(RgbColor color)
   {
     setLED(i, color);
   }
-}
-
-void notConnected()
-{
 }
 
 //--------------
