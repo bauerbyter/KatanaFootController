@@ -3,7 +3,7 @@
 #include "sysex.h"
 #include "config.h"
 #include "./model/model.h"
-//#define MS3_DEBUG_MODE
+#define MS3_DEBUG_MODE
 #include "./libs/MS3.h"
 #include <JC_Button.h>
 #include <NeoPixelBrightnessBus.h>
@@ -30,12 +30,12 @@ Switch control1 = Switch(&button1, Command{PC, W_PC, R_PATCH, 0x01, 0x01, 2}, 0)
 Switch control2 = Switch(&button2, Command{PC, W_PC, R_PATCH, 0x02, 0x02, 2}, 1);
 Switch control3 = Switch(&button3, Command{PC, W_PC, R_PATCH, 0x03, 0x03, 2}, 2);
 Switch control4 = Switch(&button4, Command{PC, W_PC, R_PATCH, 0x04, 0x04, 2}, 3);
-Latch control5 = Latch(&button5, Command{CC, PREAMP_BOOST, PREAMP_BOOST, 0x00, 0x01, 1}, 4); //TODO doesnt work right
-Switch control6 = Switch(&button6, Command{CC, BOOSTER, BOOSTER_LED, 0x00, 0x01, 1}, 9);
-Switch control7 = Switch(&button7, Command{CC, MOD, MOD_LED, 0x00, 0x01, 1}, 8);
-Switch control8 = Switch(&button8, Command{CC, FX, FX_LED, 0x00, 0x01, 1}, 7);
-Switch control9 = Switch(&button9, Command{CC, DELAY, DELAY_LED, 0x00, 0x01, 1}, 6);
-Switch control10 = Switch(&button10, Command{CC, REVERB, REVERB_LED, 0x00, 0x01, 1}, 5);
+Latch control5 = Latch(&button5, Command{CC, PREAMP_BOOST, PREAMP_BOOST, 0x00, 0x01, 1}, 4);
+Switch control6 = Switch(&button6, Command{EFFECT, BOOSTER, BOOSTER_LED, 0x00, 0x01, 1}, 9);
+Switch control7 = Switch(&button7, Command{EFFECT, MOD, MOD_LED, 0x00, 0x01, 1}, 8);
+Switch control8 = Switch(&button8, Command{EFFECT, FX, FX_LED, 0x00, 0x01, 1}, 7);
+Switch control9 = Switch(&button9, Command{EFFECT, DELAY, DELAY_LED, 0x00, 0x01, 1}, 6);
+Switch control10 = Switch(&button10, Command{EFFECT, REVERB, REVERB_LED, 0x00, 0x01, 1}, 5);
 Switch control11 = Switch(&button11, Command{BANK, 0x00, 0x00, 0x00, 0x01, 1}, 10);
 Switch control12 = Switch(&button12, Command{CC, 0x00, 0x00, 0x00, 0x01, 1}, 11);
 Switch control13 = Switch(&button13, Command{CC, 0x00, 0x00, 0x00, 0x01, 1}, 12);
@@ -65,7 +65,7 @@ Control *controller[CONTROL_SIZE] = {
 
 };
 
-int bankNumber;
+int bankNumber; //0 = Bank A, 1 = Bank B
 
 void setup()
 {
@@ -97,40 +97,69 @@ void setup()
   getKatanaStatus(false);
 }
 
-void loop()
+//Todo add to main.h
+void bankPressed(int index)
+{
+  bankNumber = controller[index]->getValue();
+  if (bankNumber > 0)
+  {
+    setLED(controller[index]->getLedPosition(), BANK_ON);
+  }
+  else
+  {
+    setLED(controller[index]->getLedPosition(), LED_OFF);
+  }
+}
+
+void pcPressed(int index)
+{
+  int value = controller[index]->getValue();
+  if (bankNumber == 1)
+  {
+    value = value + 4; //Todo: this is okay but not nice
+  }
+  katana.write(controller[index]->getCommand().address, value, controller[index]->getCommand().valueSize);
+}
+
+void ccPressed(int index)
+{
+  katana.write(controller[index]->getCommand().address, controller[index]->getValue(), controller[index]->getCommand().valueSize);
+  katana.read(controller[index]->getCommand().address, 1);
+}
+
+void effectPressed(int index)
+{
+  //Todo add FX UP Code
+  katana.write(controller[index]->getCommand().address, controller[index]->getValue(), controller[index]->getCommand().valueSize);
+}
+
+void loop() //Todo set LEDs when writing and check when incoming
 {
   for (unsigned int i = 0; i < CONTROL_SIZE; i++)
   {
     if (controller[i]->changed())
     {
-      Command tempCommand = controller[i]->getCommand();
-      if (tempCommand.type == BANK)
+      switch (controller[i]->getCommand().type)
       {
-        bankNumber = controller[i]->getValue();
-        if (bankNumber > 0)
-        {
-          setLED(controller[i]->getLedPosition(), BANK_ON);
-        }
-        else
-        {
-          setLED(controller[i]->getLedPosition(), LED_OFF);
-        }
-      }
-      else if (tempCommand.type == PC)
-      {
-        katana.write(tempCommand.address, controller[i]->getValue() + (bankNumber * 4), tempCommand.valueSize); //PFUSCH
-      }
-      else
-      {
-        katana.write(tempCommand.address, controller[i]->getValue(), tempCommand.valueSize);
-        if (tempCommand.address == LOOP || tempCommand.address == PREAMP_BOOST) //TODO
-        {
-          katana.read(tempCommand.address, 1);
-        }
+      case BANK:
+        bankPressed(i);
+        break;
+      case PC:
+        pcPressed(i);
+        break;
+      case CC:
+        ccPressed(i);
+        break;
+      case EFFECT:
+        effectPressed(i);
+        break;
+      case EFFECT_UP:
+        //Todo
+        break;
       }
     }
   }
-  //ask for values from Katana ..
+
   updateKatana();
 }
 
@@ -146,6 +175,82 @@ void getKatanaStatus(bool notPC)
   }
 }
 
+void incomingPC(int index, unsigned long parameter, byte data)
+{
+  if (data > 4)
+  {
+    bankNumber = 1;
+  }
+  else
+  {
+    bankNumber = 0;
+  }
+
+  if (controller[index]->getValue() == data)
+  {
+    setLED(controller[index]->getLedPosition(), PC_A_ON);
+  }
+  else if (controller[index]->getValue() + (bankNumber * 4) == data && bankNumber == 1) //Todo: NOT NICE
+  {
+    setLED(controller[index]->getLedPosition(), PC_B_ON);
+  }
+  else
+  {
+    setLED(controller[index]->getLedPosition(), LED_OFF);
+  }
+  getKatanaStatus(true);
+}
+
+void incomingCC(int index, unsigned long parameter, byte data)
+{
+  if (data == 0)
+  {
+    controller[index]->updateValue(0);
+    setLED(controller[index]->getLedPosition(), LED_OFF);
+  }
+  else if (data == 1)
+  {
+    controller[index]->updateValue(1);
+    setLED(controller[index]->getLedPosition(), TEMPORARY);
+  }
+}
+
+void incomingEffect(int index, unsigned long parameter, byte data)
+{
+  if (data == 0)
+  {
+    controller[index]->updateValue(0);
+    setLED(controller[index]->getLedPosition(), LED_OFF);
+  }
+  else if (data == 1)
+  {
+    controller[index]->updateValue(1);
+    setLED(controller[index]->getLedPosition(), EFFECT_GREEN);
+  }
+  else if (data == 2)
+  {
+    controller[index]->updateValue(1);
+    setLED(controller[index]->getLedPosition(), EFFECT_RED);
+  }
+  else if (data == 3)
+  {
+    controller[index]->updateValue(1);
+    setLED(controller[index]->getLedPosition(), EFFECT_YELLOW);
+  }
+}
+
+void incomingBank(int index, unsigned long parameter, byte data)
+{
+  if (bankNumber > 0)
+  {
+    setLED(controller[index]->getLedPosition(), BANK_ON);
+  }
+  else
+  {
+    setLED(controller[index]->getLedPosition(), LED_OFF);
+  }
+}
+
 void handleIncomingData(unsigned long parameter, byte data)
 {
   /*Serial.print("Receive: ");
@@ -157,67 +262,22 @@ void handleIncomingData(unsigned long parameter, byte data)
   {
     if (controller[i]->readAddressMatch(parameter))
     {
-      // ---- PC ----
-      if (controller[i]->getCommand().type == PC)
+      switch (controller[i]->getCommand().type)
       {
-        if (data > 4)
-        {
-          bankNumber = 1;
-        }
-        else
-        {
-          bankNumber = 0;
-        }
-
-        if (controller[i]->getValue() == data)
-        {
-          setLED(controller[i]->getLedPosition(), PC_A_ON);
-        }
-        else if (controller[i]->getValue() + (bankNumber * 4) == data && bankNumber == 1) //PFUSCH
-        {
-          setLED(controller[i]->getLedPosition(), PC_B_ON);
-        }
-        else
-        {
-          setLED(controller[i]->getLedPosition(), LED_OFF);
-        }
-        getKatanaStatus(true);
-      }
-      // ---- CC ----
-      else if (controller[i]->getCommand().type == CC)
-      {
-        if (data == 0)
-        {
-          controller[i]->updateValue(0);
-          setLED(controller[i]->getLedPosition(), LED_OFF);
-        }
-        else if (data == 1)
-        {
-          controller[i]->updateValue(1);
-          setLED(controller[i]->getLedPosition(), EFFECT_GREEN);
-        }
-        else if (data == 2)
-        {
-          controller[i]->updateValue(1);
-          setLED(controller[i]->getLedPosition(), EFFECT_RED);
-        }
-        else if (data == 3)
-        {
-          controller[i]->updateValue(1);
-          setLED(controller[i]->getLedPosition(), EFFECT_YELLOW);
-        }
-      }
-    }
-    // ---- BANK ----
-    if (controller[i]->getCommand().type == BANK)
-    {
-      if (bankNumber > 0)
-      {
-        setLED(controller[i]->getLedPosition(), BANK_ON);
-      }
-      else
-      {
-        setLED(controller[i]->getLedPosition(), LED_OFF);
+      case PC:
+        incomingPC(i, parameter, data);
+        break;
+      case CC:
+        incomingCC(i, parameter, data);
+        break;
+      case EFFECT:
+        incomingEffect(i, parameter, data);
+        break;
+      case BANK:
+        incomingBank(i, parameter, data);
+      case EFFECT_UP:
+        //Todo
+        break;
       }
     }
   }

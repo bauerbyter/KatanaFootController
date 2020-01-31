@@ -8,8 +8,10 @@
 enum commandType
 {
   PC,
-  CC,
-  BANK,
+  CC, //normal CC
+  EFFECT, //this is for the Booster,Mod,FX,Delay,Reverb because they have 4 States= off, green, red, yellow
+  EFFECT_UP, // Switch between green, red, yellow for Effects
+  BANK, //Switch between Bank A/B
 };
 
 struct Command

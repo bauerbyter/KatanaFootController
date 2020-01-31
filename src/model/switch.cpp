@@ -11,24 +11,18 @@ Switch::Switch(Button *button,
 bool Switch::changed()
 {
   button->read();
-  if (this->command.type == PC)
+
+  if (button->wasPressed())
   {
-    return button->wasPressed();
-  }
-  else if (this->command.type == CC || this->command.type == BANK)
-  {
-    if (button->wasPressed())
+    if (value == this->command.endValue)
     {
-      if (value == this->command.endValue)
-      {
-        this->value = this->command.startValue;
-      }
-      else
-      {
-        this->value = this->command.endValue;
-      }
-      return true;
+      this->value = this->command.startValue;
     }
+    else
+    {
+      this->value = this->command.endValue;
+    }
+    return true;
   }
   return false;
 }
