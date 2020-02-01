@@ -28,14 +28,15 @@ class Control
 {
 
 protected:
+  byte pin;
   Button *button;
   byte value;
   Command command;
   byte ledPosition;
 
 public:
-  Control(Button *button, Command command, byte ledNumber);
-
+  Control(byte pin, Command command, byte ledNumber);
+  byte getPin();
   byte getValue();
   Command getCommand();
   byte getLedPosition();

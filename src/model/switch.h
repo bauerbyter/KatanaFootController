@@ -11,7 +11,7 @@ class Switch : public Control
 
 
 public:
-  Switch(Button *button, Command command, byte ledNumber);
+  Switch(byte pin, Command command, byte ledNumber);
 
   virtual bool changed() override;
   virtual void updateValue(byte value) override;

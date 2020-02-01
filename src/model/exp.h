@@ -11,7 +11,7 @@ class Exp : public Control
 {
 
 public:
-  Exp(Button *button, Command command, byte ledNumber);
+  Exp(byte pin, Command command, byte ledNumber);
 
   bool changed() override;
   void updateValue(byte value) override;

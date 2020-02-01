@@ -1,9 +1,10 @@
 #include "control.h"
-Control::Control(Button *button,
+Control::Control(byte pin,
                  Command command,
                  byte ledPosition)
 {
-  this->button = button;
+  this->pin = pin;
+  this->button = new Button(pin, DEBOUNCE_MS);
   this->command = command;
   this->ledPosition = ledPosition;
   this->value = command.startValue;
@@ -16,6 +17,10 @@ byte Control::getValue()
 Command Control::getCommand()
 {
   return this->command;
+}
+byte Control::getPin()
+{
+  return this->pin;
 }
 
 byte Control::getLedPosition()

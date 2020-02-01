@@ -1,9 +1,9 @@
 
 #include "latch.h"
 
-Latch::Latch(Button *button,
+Latch::Latch(byte pin,
              Command command,
-             byte ledPosition) : Switch(button, command, ledPosition)
+             byte ledPosition) : Switch(pin, command, ledPosition)
 {
 }
 
@@ -13,13 +13,11 @@ bool Latch::changed()
 
   if (button->wasPressed())
   {
-    Serial.println("Latch was pressed");
     this->value = this->command.endValue;
     return true;
   }
   else if (button->wasReleased())
   {
-    Serial.println("Latch was released");
     this->value = this->command.startValue;
     return true;
   }

@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------
 #include "switch.h"
 
-Switch::Switch(Button *button,
+Switch::Switch(byte pin,
                Command command,
-               byte ledPosition) : Control(button, command, ledPosition)
+               byte ledPosition) : Control(pin, command, ledPosition)
 {
   //this->button = new Button(this->pin, DEBOUNCE_MS, INTERNAL_PULLUP, SWITCH_PULLUP);
 }

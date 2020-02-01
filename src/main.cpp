@@ -9,38 +9,25 @@
 #include <NeoPixelBrightnessBus.h>
 
 MS3 katana;
-//Todo: This has to be here and not in the object, the PULLUP is not working then.
-Button button1(29, DEBOUNCE_MS);
-Button button2(33, DEBOUNCE_MS);
-Button button3(26, DEBOUNCE_MS);
-Button button4(36, DEBOUNCE_MS);
-Button button5(39, DEBOUNCE_MS);
-Button button6(38, DEBOUNCE_MS);
-Button button7(37, DEBOUNCE_MS);
-Button button8(23, DEBOUNCE_MS);
-Button button9(22, DEBOUNCE_MS);
-Button button10(25, DEBOUNCE_MS);
-Button button11(32, DEBOUNCE_MS);
-Button button12(28, DEBOUNCE_MS);
-Button button13(30, DEBOUNCE_MS);
-Button button14(27, DEBOUNCE_MS);
-Button button15(31, DEBOUNCE_MS);
 
-Switch control1 = Switch(&button1, Command{PC, W_PC, R_PATCH, 0x01, 0x01, 2}, 0);
-Switch control2 = Switch(&button2, Command{PC, W_PC, R_PATCH, 0x02, 0x02, 2}, 1);
-Switch control3 = Switch(&button3, Command{PC, W_PC, R_PATCH, 0x03, 0x03, 2}, 2);
-Switch control4 = Switch(&button4, Command{PC, W_PC, R_PATCH, 0x04, 0x04, 2}, 3);
-Latch control5 = Latch(&button5, Command{CC, PREAMP_BOOST, PREAMP_BOOST, 0x00, 0x01, 1}, 4);
-Switch control6 = Switch(&button6, Command{EFFECT, BOOSTER, BOOSTER_LED, 0x00, 0x01, 1}, 9);
-Switch control7 = Switch(&button7, Command{EFFECT, MOD, MOD_LED, 0x00, 0x01, 1}, 8);
-Switch control8 = Switch(&button8, Command{EFFECT, FX, FX_LED, 0x00, 0x01, 1}, 7);
-Switch control9 = Switch(&button9, Command{EFFECT, DELAY, DELAY_LED, 0x00, 0x01, 1}, 6);
-Switch control10 = Switch(&button10, Command{EFFECT, REVERB, REVERB_LED, 0x00, 0x01, 1}, 5);
-Switch control11 = Switch(&button11, Command{BANK, 0xFF, 0xFF, 0x00, 0x01, 1}, 10); //0xFF = not used
-Switch control12 = Switch(&button12, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 11);
-Switch control13 = Switch(&button13, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 12);
-Switch control14 = Switch(&button14, Command{CC, LOOP, LOOP, 0x00, 0x01, 1}, 13);
-Switch control15 = Switch(&button15, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 14);
+//Todo: Maybe dont use different style of Buttons like Button, Latch... 
+//but instead using effectButton, ProgramChangeButton, BankUpButton...
+//so we can save the status and set LEDs inside the object.
+Switch control1 = Switch(29, Command{PC, W_PC, R_PATCH, 0x01, 0x01, 2}, 0);
+Switch control2 = Switch(33, Command{PC, W_PC, R_PATCH, 0x02, 0x02, 2}, 1);
+Switch control3 = Switch(26, Command{PC, W_PC, R_PATCH, 0x03, 0x03, 2}, 2);
+Switch control4 = Switch(36, Command{PC, W_PC, R_PATCH, 0x04, 0x04, 2}, 3);
+Latch control5 = Latch(39, Command{CC, PREAMP_BOOST, PREAMP_BOOST, 0x00, 0x01, 1}, 4);
+Switch control6 = Switch(38, Command{EFFECT, BOOSTER, BOOSTER_LED, 0x00, 0x01, 1}, 9);
+Switch control7 = Switch(37, Command{EFFECT, MOD, MOD_LED, 0x00, 0x01, 1}, 8);
+Switch control8 = Switch(23, Command{EFFECT, FX, FX_LED, 0x00, 0x01, 1}, 7);
+Switch control9 = Switch(22, Command{EFFECT, DELAY, DELAY_LED, 0x00, 0x01, 1}, 6);
+Switch control10 = Switch(25, Command{EFFECT, REVERB, REVERB_LED, 0x00, 0x01, 1}, 5);
+Switch control11 = Switch(32, Command{BANK, 0xFF, 0xFF, 0x00, 0x01, 1}, 10); //0xFF = not used
+Switch control12 = Switch(28, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 11);
+Switch control13 = Switch(30, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 12);
+Switch control14 = Switch(27, Command{CC, LOOP, LOOP, 0x00, 0x01, 1}, 13);
+Switch control15 = Switch(31, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 14);
 
 #define CONTROL_SIZE 15
 
@@ -75,23 +62,12 @@ void setup()
   strip.SetBrightness(LED_BRIGHTNESS);
   strip.Show();
 
-  //Todo: Think about better solution, Issue in JC_Button?
-  pinMode(29, INPUT_PULLUP);
-  pinMode(33, INPUT_PULLUP);
-  pinMode(26, INPUT_PULLUP);
-  pinMode(36, INPUT_PULLUP);
-  pinMode(39, INPUT_PULLUP);
-  pinMode(38, INPUT_PULLUP);
-  pinMode(37, INPUT_PULLUP);
-  pinMode(23, INPUT_PULLUP);
-  pinMode(22, INPUT_PULLUP);
-  pinMode(25, INPUT_PULLUP);
-  pinMode(32, INPUT_PULLUP);
-  pinMode(28, INPUT_PULLUP);
-  pinMode(30, INPUT_PULLUP);
-  pinMode(27, INPUT_PULLUP);
-  pinMode(31, INPUT_PULLUP);
 
+  for (int i = 0; i < CONTROL_SIZE; i++) //has to be done. Maybe issue in JC_Button?
+  {
+    pinMode(controller[i]->getPin(), INPUT_PULLUP);
+  }
+  
   setupKatana();
 
   getKatanaStatus(false);
@@ -129,7 +105,7 @@ void ccPressed(int index)
 
 void effectPressed(int index)
 {
-  //Todo add FX UP Code
+  //Todo add FX UP Code .. also think about saving the FX status
   katana.write(controller[index]->getCommand().address, controller[index]->getValue(), controller[index]->getCommand().valueSize);
 }
 

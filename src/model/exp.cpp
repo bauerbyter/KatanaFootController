@@ -1,8 +1,8 @@
 #include "exp.h"
 
-Exp::Exp(Button *button,
+Exp::Exp(byte pin,
          Command command,
-         byte ledPosition) : Control(button, command, ledPosition)
+         byte ledPosition) : Control(pin, command, ledPosition)
 {
 }
 
