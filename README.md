@@ -41,6 +41,7 @@ To be very clear: I just adapted code from other people and just wrote some litt
 - WS2812 / Neopixel in 12mm
 - Switches (I am using these: https://www.thomann.de/de/tad_footswitch_momentary_spst.htm)
 - Optional: https://www.thomann.de/de/neutrik_nausb_b.htm
+![Alt text](images/fritzing.png?raw=true "Fritzing")
 
 ## Pics
 ![Alt text](images/Image_top.jpg?raw=true "Top")
