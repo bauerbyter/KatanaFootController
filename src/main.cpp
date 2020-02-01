@@ -25,7 +25,7 @@ Switch control9 = Switch(22, Command{EFFECT, DELAY, DELAY_LED, 0x00, 0x01, 1}, 6
 Switch control10 = Switch(25, Command{EFFECT, REVERB, REVERB_LED, 0x00, 0x01, 1}, 5);
 Switch control11 = Switch(32, Command{BANK, 0xFF, 0xFF, 0x00, 0x01, 1}, 10); //0xFF = not used
 Switch control12 = Switch(28, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 11);
-Switch control13 = Switch(30, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 12);
+Switch control13 = Switch(30, Command{CC, FOOT_VOLUME, FOOT_VOLUME, 100, 0, 1}, 12); //Todo: LED has to be inverted
 Switch control14 = Switch(27, Command{CC, LOOP, LOOP, 0x00, 0x01, 1}, 13);
 Switch control15 = Switch(31, Command{CC, 0xFF, 0xFF, 0x00, 0x01, 1}, 14);
 
@@ -184,7 +184,7 @@ void incomingCC(int index, unsigned long parameter, byte data)
     controller[index]->updateValue(0);
     setLED(controller[index]->getLedPosition(), LED_OFF);
   }
-  else if (data == 1)
+  else if (data >= 1)
   {
     controller[index]->updateValue(1);
     setLED(controller[index]->getLedPosition(), TEMPORARY);
@@ -279,6 +279,15 @@ void setAllLeds(RgbColor color)
 //--------------
 //----KATANA----
 //--------------
+void disconnected(){
+  setAllLeds(LED_OFF);
+  setLED(10,WARNING_LED);
+}
+
+void connected(){
+  setAllLeds(LED_OFF);
+}
+
 void setupKatana()
 {
   if (!katana.begin())
@@ -296,13 +305,13 @@ void setupKatana()
     switch (katana.update(parameter, data))
     {
     case MS3_NOT_READY:
-      setAllLeds(WARNING_LED);
+      disconnected();
       Serial.println(F("Katana OFFLINE !"));
       Serial.println();
       delay(100);
       break;
     case MS3_READY:
-      setAllLeds(LED_OFF);
+      connected();
       katana.setEditorMode();
       katana.read(R_PATCH, 0x02);
       editMode = 1;
@@ -314,7 +323,7 @@ void setupKatana()
 void reconnectKatana(void)
 {
 
-  setAllLeds(WARNING_LED);
+  disconnected();
   unsigned long test = 0;
   byte dataTest = 0;
   Serial.println();
@@ -325,7 +334,7 @@ void reconnectKatana(void)
   switch (katana.update(test, dataTest))
   {
   case MS3_READY:
-    setAllLeds(LED_OFF);
+    connected();
     Serial.println(F("############ Back again Baby!"));
     Serial.println();
     katana.setEditorMode();

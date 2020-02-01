@@ -13,6 +13,7 @@ static const unsigned long FX =                 0x60000300;
 static const unsigned long DELAY =              0x60000500;
 static const unsigned long REVERB =             0x60000540;
 static const unsigned long LOOP =               0x60000562;
+static const unsigned long INPUT_VOLUME =       0x60000561;
 
 
 

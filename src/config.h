@@ -16,7 +16,7 @@
 #define EFFECT_GREEN RgbColor(0, 255, 0)
 #define EFFECT_RED RgbColor(255, 0, 0)
 #define EFFECT_YELLOW RgbColor(250, 180, 10)
-#define WARNING_LED RgbColor(255, 0, 0)
+#define WARNING_LED RgbColor(60, 0, 0)
 #define BOOST_LED RgbColor(255, 0, 0)
 #define LOOP_LED RgbColor(0, 150, 0)
 
