@@ -1,47 +1,28 @@
 #include "control.h"
+
 Control::Control(byte pin,
-                 Command command,
-                 byte ledPosition)
+                 byte ledPosition,
+                 Command command)
 {
   this->pin = pin;
-  this->button = new Button(pin, DEBOUNCE_MS);
-  this->command = command;
   this->ledPosition = ledPosition;
-  this->value = command.startValue;
-}
+  this->command = command;
+  this->value = command.value;
 
-byte Control::getValue()
-{
-  return this->value;
-}
-Command Control::getCommand()
-{
-  return this->command;
-}
-byte Control::getPin()
-{
-  return this->pin;
-}
-
-byte Control::getLedPosition()
-{
-  return this->ledPosition;
-}
-
-bool Control::addressMatch(unsigned long address)
-{
-  return this->command.address == address;
-}
-
-bool Control::readAddressMatch(unsigned long address)
-{
-  return this->command.readAddress == address;
+  this->button = new Button(pin, DEBOUNCE_MS);
 }
 
 bool Control::changed()
 {
+  button->read();
+
+  if (button->wasPressed())
+  {
+    return true;
+  }
   return false;
 }
-void Control::updateValue(byte value)
-{
+
+Command Control::getCommand(){
+
 }

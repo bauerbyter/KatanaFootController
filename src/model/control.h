@@ -3,17 +3,10 @@
 
 #include <Arduino.h>
 #include <JC_Button.h>
+#include <NeoPixelBrightnessBus.h>
 #include "config.h"
 
-enum commandType
-{
-  PC,
-  CC, //normal CC
-  EFFECT, //this is for the Booster,Mod,FX,Delay,Reverb because they have 4 States= off, green, red, yellow
-  EFFECT_UP, // Switch between green, red, yellow for Effects
-  BANK, //Switch between Bank A/B
-};
-
+/*
 struct Command
 {
   commandType type;
@@ -45,11 +38,38 @@ public:
   //void printStatus();
   virtual bool changed() = 0;
   virtual void updateValue(byte value) = 0;
+};*/
+
+struct Command
+{
+  unsigned long sendParameter;
+  unsigned long readParameter;
+  int valueSize;
+  int value;
+  bool needsRead;
+};
+
+struct Led{
+  byte ledPosition;
+  RgbColor color;
+};
+
+class Control
+{
+
+private:
+  byte pin;
+  byte ledPosition;
+  Button *button;
+  byte value;
+  byte type;
+  Command command;
+
+public:
+  Control(byte pin, byte ledPosition, Command command);
+  bool changed();
+  Command getCommand();
+  Led getLed();
+  void update(unsigned long paramater, byte value);
 };
 #endif
-
-
-
-
-
-
