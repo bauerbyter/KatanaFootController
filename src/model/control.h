@@ -40,16 +40,8 @@ public:
   virtual void updateValue(byte value) = 0;
 };*/
 
-struct Command
+struct Led
 {
-  unsigned long sendParameter;
-  unsigned long readParameter;
-  int valueSize;
-  int value;
-  bool needsRead;
-};
-
-struct Led{
   byte ledPosition;
   RgbColor color;
 };
@@ -57,19 +49,52 @@ struct Led{
 class Control
 {
 
-private:
+protected:
   byte pin;
   byte ledPosition;
   Button *button;
-  byte value;
-  byte type;
-  Command command;
+  byte currentValue;
+  byte state;
+  unsigned long sendParameter;
+  unsigned long readParameter;
+  bool valueSize;
+  bool firstValue;
+  bool secondValue;
+  bool needsRead;
 
 public:
-  Control(byte pin, byte ledPosition, Command command);
-  bool changed();
-  Command getCommand();
-  Led getLed();
-  void update(unsigned long paramater, byte value);
+  Control(byte pin,
+          byte ledPosition,
+          unsigned long sendParameter,
+          unsigned long readParameter,
+          byte firstValue,
+          byte secondValue,
+          byte valueSize,
+          bool needsRead = false);
+  bool paramaterMatch(unsigned long parameter);
+  virtual bool changed();
+  virtual void update(byte value);
+  virtual Led getLed() = 0;
 };
+
+class ChannelButton : public Control
+{
+private:
+  bool bankAB;
+
+public:
+  ChannelButton(byte pin,
+                byte ledPosition,
+                unsigned long sendParameter,
+                unsigned long readParameter,
+                byte firstValue,
+                byte secondValue,
+                byte valueSize,
+                bool needsRead = false,
+                bool bankAB = true);
+  virtual bool changed() override;
+  virtual void update(byte value) override;
+  virtual Led getLed() override;
+};
+
 #endif
