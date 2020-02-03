@@ -6,6 +6,8 @@ It is possibel to config every switch to whatever function you like.
 
 At the moment this is just for the MK2 (mkii), but its easy changeable to MK1 (mki).
 
+Contribution is gladly seen.
+
 ## Status
 ### Working
 - Change Channel
