@@ -231,13 +231,13 @@ void connectKatana()
     switch (katana.update(parameter, data))
     {
     case MS3_NOT_READY:
-      //disconnected();
+      setLed(Led{10, LED_WARNING});
       Serial.println(F("Katana OFFLINE !"));
       Serial.println();
       delay(100);
       break;
     case MS3_READY:
-      //connected();
+      setLed(Led{10, LED_OFF});
       katana.setEditorMode();
       getKatanaStatus();
       katana.read(PARA_PC, 0x02);
