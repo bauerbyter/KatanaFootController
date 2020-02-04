@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <JC_Button.h>
+#include <NeoPixelBrightnessBus.h>
 #include "config.h"
 
 enum commandType
@@ -12,6 +13,7 @@ enum commandType
   EFFECT, //this is for the Booster,Mod,FX,Delay,Reverb because they have 4 States= off, green, red, yellow
   EFFECT_UP, // Switch between green, red, yellow for Effects
   BANK, //Switch between Bank A/B
+  TAP,
 };
 
 struct Command
@@ -33,11 +35,18 @@ protected:
   byte value;
   Command command;
   byte ledPosition;
+  byte state;
+  bool inverse;
+  RgbColor color;
 
 public:
-  Control(byte pin, Command command, byte ledNumber);
+  Control(byte pin, Command command, byte ledNumber, RgbColor color = DEFAULT_COLOR, bool inverted = false);
   byte getPin();
   byte getValue();
+  byte getState();
+  void setState(byte state);
+  RgbColor getColor();
+  bool isInverted();
   Command getCommand();
   byte getLedPosition();
   bool addressMatch(unsigned long address);

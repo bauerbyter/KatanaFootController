@@ -13,7 +13,7 @@ class Latch : public Switch
 protected:
 
 public:
-  Latch(byte pin, Command command, byte ledNumber);
+  Latch(byte pin, Command command, byte ledNumber, RgbColor color = DEFAULT_COLOR);
 
   virtual bool changed() override;
   virtual void updateValue(byte value) override;

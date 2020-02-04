@@ -19,12 +19,14 @@
 #define WARNING_LED RgbColor(60, 0, 0)
 #define BOOST_LED RgbColor(255, 0, 0)
 #define LOOP_LED RgbColor(0, 150, 0)
+#define MUTE_LED RgbColor(255,0,0)
 
-#define TEMPORARY RgbColor(0, 120, 120)
+#define DEFAULT_COLOR RgbColor(0, 120, 120)
 
 #define PC_A_ON RgbColor(0, 0, 255)
 #define PC_B_ON RgbColor(200, 0, 200)
 #define BANK_ON RgbColor(200, 0, 200)
+#define EFFECT_UP_ON RgbColor(200, 0, 200)
 
 
 

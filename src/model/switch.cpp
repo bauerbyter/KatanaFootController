@@ -3,9 +3,11 @@
 
 Switch::Switch(byte pin,
                Command command,
-               byte ledPosition) : Control(pin, command, ledPosition)
+               byte ledPosition,
+               RgbColor color,
+               bool inverted) : Control(pin, command, ledPosition, color, inverted)
 {
-  //this->button = new Button(this->pin, DEBOUNCE_MS, INTERNAL_PULLUP, SWITCH_PULLUP);
+
 }
 
 bool Switch::changed()
@@ -32,7 +34,6 @@ void Switch::updateValue(byte value)
   {
     return;
   }
-
   if (value == this->command.endValue)
   {
     this->value = this->command.endValue;

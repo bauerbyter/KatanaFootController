@@ -3,7 +3,8 @@
 
 Latch::Latch(byte pin,
              Command command,
-             byte ledPosition) : Switch(pin, command, ledPosition)
+             byte ledPosition,
+             RgbColor color) : Switch(pin, command, ledPosition, color)
 {
 }
 
