@@ -26,6 +26,12 @@ static const unsigned long PARA_FX_LED =                 0x6000065F;
 static const unsigned long PARA_DELAY_LED =              0x60000660;
 static const unsigned long PARA_REVERB_LED =             0x60000661;
 
+static const unsigned long PARA_BOOSTER_STATE =          0x60000639;
+static const unsigned long PARA_MOD_STATE =              0x6000063A;
+static const unsigned long PARA_FX_STATE =               0x6000063B;
+static const unsigned long PARA_DELAY_STATE =            0x6000063C;
+static const unsigned long PARA_REVERB_STATE =           0x6000063D;
+
 
 
 #endif

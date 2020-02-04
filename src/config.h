@@ -27,6 +27,7 @@
 #define LED_PC_A_ON RgbColor(0, 0, 255)
 #define LED_PC_B_ON RgbColor(200, 0, 200)
 #define LED_BANK_ON RgbColor(200, 0, 200)
+#define LED_EFFECT_UP RgbColor(200, 0, 200)
 
 
 

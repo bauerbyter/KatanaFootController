@@ -5,10 +5,18 @@
 #include <NeoPixelBrightnessBus.h>
 #include "sysex.h"
 #include "config.h"
-#include "./model/control.h"
+
 //#define MS3_DEBUG_MODE
 #include "./libs/MS3.h"
 #include <JC_Button.h>
+
+#include "./model/control.h"
+#include "model/channelButton.h"
+#include "model/effectButton.h"
+#include "model/ccButton.h"
+#include "model/tapButton.h"
+#include "model/bankButton.h"
+#include "model/effectBankButton.h"
 
 void setupKatana();
 void updateKatana();
@@ -18,6 +26,6 @@ void getKatanaStatus();
 void setLed(Led led);
 void sendTap(int index);
 void bankChange(int index);
+bool effectButtonPressed(int index);
 
 #endif
-

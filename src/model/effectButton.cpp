@@ -3,7 +3,8 @@
 EffectButton::EffectButton(byte pin,
                            byte ledPosition,
                            unsigned long sendParameter,
-                           unsigned long readParameter) : Control(pin,
+                           unsigned long readParameter,
+                           unsigned long typeParameter) : Control(pin,
                                                                   ledPosition,
                                                                   sendParameter,
                                                                   readParameter,
@@ -13,6 +14,7 @@ EffectButton::EffectButton(byte pin,
                                                                   EFFECT_BUTTON,
                                                                   false)
 {
+    this->typeParameter = typeParameter;
 }
 
 bool EffectButton::changed()
@@ -48,7 +50,8 @@ void EffectButton::update(byte value)
 
 Led EffectButton::getLed(byte value)
 {
-  
+    state = value;
+
     if (value == 1)
     {
         return Led{this->ledPosition, LED_EFFECT_GREEN};
@@ -65,4 +68,30 @@ Led EffectButton::getLed(byte value)
     {
         return Led{this->ledPosition, LED_OFF};
     }
+}
+
+byte EffectButton::getType()
+{
+
+    if (state >= 3)
+    {
+        return 0;
+    }
+    else if (state == 0)
+    {
+        return 4; // 4 = nothing should happen ..
+    }
+    else
+    {
+        return this->state;
+    }
+}
+byte EffectButton::getState()
+{
+    return this->state;
+}
+
+unsigned long EffectButton::getTypeParameter()
+{
+    return this->typeParameter;
 }
