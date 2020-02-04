@@ -7,24 +7,26 @@
 
 #define LED_PIN 6
 
-#define LED_BRIGHTNESS 30
+
 #define DEBOUNCE_MS 50
 #define LONGPRESSDURATION 1500
 #define EXP_THRESHOLD 2
 
+#define LED_BRIGHTNESS 30
 #define LED_OFF RgbColor(0, 0, 0)
-#define EFFECT_GREEN RgbColor(0, 255, 0)
-#define EFFECT_RED RgbColor(255, 0, 0)
-#define EFFECT_YELLOW RgbColor(250, 180, 10)
-#define WARNING_LED RgbColor(60, 0, 0)
-#define BOOST_LED RgbColor(255, 0, 0)
-#define LOOP_LED RgbColor(0, 150, 0)
+#define LED_EFFECT_GREEN RgbColor(0, 255, 0)
+#define LED_EFFECT_RED RgbColor(255, 0, 0)
+#define LED_EFFECT_YELLOW RgbColor(250, 180, 10)
+#define LED_WARNING RgbColor(60, 0, 0)
+#define LED_BOOST RgbColor(255, 0, 0)
+#define LED_LOOP RgbColor(0, 150, 150)
+#define LED_MUTE RgbColor(255, 0, 0)
 
-#define TEMPORARY RgbColor(0, 120, 120)
+#define LED_DEFAULT RgbColor(0, 120, 120)
 
-#define PC_A_ON RgbColor(0, 0, 255)
-#define PC_B_ON RgbColor(200, 0, 200)
-#define BANK_ON RgbColor(200, 0, 200)
+#define LED_PC_A_ON RgbColor(0, 0, 255)
+#define LED_PC_B_ON RgbColor(200, 0, 200)
+#define LED_BANK_ON RgbColor(200, 0, 200)
 
 
 

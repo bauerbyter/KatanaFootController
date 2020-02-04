@@ -6,39 +6,16 @@
 #include <NeoPixelBrightnessBus.h>
 #include "config.h"
 
-/*
-struct Command
+enum ClassType //.. no typeid in arduino -.-
 {
-  commandType type;
-  unsigned long address;
-  unsigned long readAddress;
-  byte startValue;
-  byte endValue;
-  byte valueSize;
+  CONTROL,
+  CHANNEL_BUTTON,
+  EFFECT_BUTTON,
+  CC_BUTTON,
+  TAP_BUTTON,
+  BANK_BUTTON,
+  EFFECT_BANK_BUTTON,
 };
-
-class Control
-{
-
-protected:
-  byte pin;
-  Button *button;
-  byte value;
-  Command command;
-  byte ledPosition;
-
-public:
-  Control(byte pin, Command command, byte ledNumber);
-  byte getPin();
-  byte getValue();
-  Command getCommand();
-  byte getLedPosition();
-  bool addressMatch(unsigned long address);
-  bool readAddressMatch(unsigned long address);
-  //void printStatus();
-  virtual bool changed() = 0;
-  virtual void updateValue(byte value) = 0;
-};*/
 
 struct Led
 {
@@ -54,13 +31,13 @@ protected:
   byte ledPosition;
   Button *button;
   byte currentValue;
-  byte state;
   unsigned long sendParameter;
   unsigned long readParameter;
-  bool valueSize;
-  bool firstValue;
-  bool secondValue;
+  byte valueSize;
+  byte firstValue;
+  byte secondValue;
   bool needsRead;
+  ClassType classType;
 
 public:
   Control(byte pin,
@@ -70,31 +47,20 @@ public:
           byte firstValue,
           byte secondValue,
           byte valueSize,
+          ClassType classType,
           bool needsRead = false);
   bool paramaterMatch(unsigned long parameter);
-  virtual bool changed();
-  virtual void update(byte value);
-  virtual Led getLed() = 0;
-};
+  byte getValueSize();
+  byte getPin();
+  unsigned long getSendParameter();
+  unsigned long getReadParameter();
+  byte getValue();
+  ClassType getClassType();
+  bool getNeedsRead();
 
-class ChannelButton : public Control
-{
-private:
-  bool bankAB;
-
-public:
-  ChannelButton(byte pin,
-                byte ledPosition,
-                unsigned long sendParameter,
-                unsigned long readParameter,
-                byte firstValue,
-                byte secondValue,
-                byte valueSize,
-                bool needsRead = false,
-                bool bankAB = true);
-  virtual bool changed() override;
-  virtual void update(byte value) override;
-  virtual Led getLed() override;
+  virtual Led getLed(byte value) = 0;
+  virtual bool changed() = 0;
+  virtual void update(byte value) = 0;
 };
 
 #endif

@@ -7,7 +7,8 @@ Control::Control(byte pin,
                  byte firstValue,
                  byte secondValue,
                  byte valueSize,
-                 bool needsRead = false)
+                 ClassType classType,
+                 bool needsRead)
 {
   this->pin = pin;
   this->ledPosition = ledPosition;
@@ -16,16 +17,11 @@ Control::Control(byte pin,
   this->firstValue = firstValue;
   this->secondValue = secondValue;
   this->valueSize = valueSize;
+  this->classType = classType;
   this->needsRead = needsRead;
 
-  //this->currentValue = command.value;
-
+  this->currentValue = firstValue;
   this->button = new Button(pin, DEBOUNCE_MS);
-}
-
-bool Control::changed()
-{
-  return false;
 }
 
 bool Control::paramaterMatch(unsigned long parameter)
@@ -37,85 +33,34 @@ bool Control::paramaterMatch(unsigned long parameter)
   return false;
 }
 
-/*Led Control::getLed()
+byte Control::getValue()
 {
-  return Led{0, LED}
-}*/
-//##############################//
-//------------------------------//
-
-ChannelButton::ChannelButton(byte pin,
-                             byte ledPosition,
-                             unsigned long sendParameter,
-                             unsigned long readParameter,
-                             byte firstValue,
-                             byte secondValue,
-                             byte valueSize,
-                             bool needsRead = false,
-                             bool bankAB = true) : Control(pin,
-                                                           ledPosition,
-                                                           sendParameter,
-                                                           readParameter,
-                                                           firstValue,
-                                                           secondValue,
-                                                           valueSize,
-                                                           needsRead)
-{
-  this->bankAB = bankAB;
+  return this->currentValue;
 }
 
-bool ChannelButton::changed()
+byte Control::getValueSize()
 {
-  button->read();
-
-  if (button->wasPressed())
-  {
-    return true;
-  }
-  return false;
+  return this->valueSize;
+}
+unsigned long Control::getSendParameter()
+{
+  return this->sendParameter;
+}
+unsigned long Control::getReadParameter()
+{
+  return this->readParameter;
+}
+byte Control::getPin()
+{
+  return this->pin;
 }
 
-
-void ChannelButton::BankSwitch(byte bank)
+ClassType Control::getClassType()
 {
-  if (bank == 1)
-  {
-    state = 1;
-  }
-  else
-  {
-    state = 0;
-  }
+  return this->classType;
 }
 
-void ChannelButton::update(byte value)
+bool Control::getNeedsRead()
 {
-  if (value == this->firstValue)
-  {
-    state = 1;
-  }
-  else if (bankAB && value == this->secondValue)
-  {
-    state = 2;
-  }
-  else
-  {
-    state = 0;
-  }
-}
-
-Led ChannelButton::getLed()
-{
-  if (state == 1)
-  {
-    return Led{this->ledPosition, PC_A_ON};
-  }
-  else if (state == 2)
-  {
-    return Led{this->ledPosition, PC_B_ON};
-  }
-  else
-  {
-    return Led{this->ledPosition, LED_OFF};
-  }
+  return this->needsRead;
 }
