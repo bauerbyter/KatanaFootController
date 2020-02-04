@@ -101,7 +101,6 @@ void loop()
         }
       default:
         katana.write(controller[i]->getSendParameter(), controller[i]->getValue(), controller[i]->getValueSize());
-        DEBUGLN("JO");
         break;
       }
 
@@ -153,6 +152,14 @@ void setLed(Led led)
   }
 }
 
+void clearAllLeds()
+{
+  for (int i = 0; i < CONTROL_SIZE; i++)
+  {
+    setLed(Led{i, LED_OFF});
+  }
+}
+
 void sendTap(int index)
 {
   uint8_t dd_time_msb = ((60000 / controller[index]->getValue()) / 128);
@@ -182,10 +189,10 @@ bool effectButtonPressed(int index)
   EffectButton *temp = (EffectButton *)controller[index];
   if (temp->getState() != 0)
   {
-    DEBUGLN(temp->getState());
     katana.write(temp->getTypeParameter(), temp->getType(), temp->getValueSize());
-    isEffectBankPressed = false;
 
+    /* Only if you want the Button to reset after an Effect was pressed
+    isEffectBankPressed = false;
     for (unsigned int i = 0; i < CONTROL_SIZE; i++)
     {
       if (controller[i]->getClassType() == EFFECT_BANK_BUTTON)
@@ -193,7 +200,7 @@ bool effectButtonPressed(int index)
         controller[i]->update(0);
         setLed(controller[i]->getLed(0));
       }
-    }
+    }*/
     return true;
   }
   return false;
@@ -259,13 +266,14 @@ void connectKatana()
     switch (katana.update(parameter, data))
     {
     case MS3_NOT_READY:
+      clearAllLeds();
       setLed(Led{10, LED_WARNING});
       Serial.println(F("Katana OFFLINE !"));
       Serial.println();
       delay(100);
       break;
     case MS3_READY:
-      setLed(Led{10, LED_OFF});
+      clearAllLeds();
       katana.setEditorMode();
       getKatanaStatus();
       katana.read(PARA_PC, 0x02);
