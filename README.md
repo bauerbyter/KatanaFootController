@@ -15,9 +15,10 @@ At the moment this is just for the MK2 (mkii), but its easy changeable to MK1 (m
 - Send/Return on/off
 - Mute
 - Send Tap 
+- Switch Effect Type (red/green/yellow)
 
 ### Missing
-- Switch Effect Type (red/green/yellow)
+
 - Show Tap
 - Exp-Pedal enhancement
 
