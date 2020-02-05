@@ -17,7 +17,7 @@ public:
                   byte secondValue);
     virtual Led getLed(byte value) override;
     virtual bool changed() override;
-    virtual void update(byte value) override;
+    virtual void update(int value) override;
     void bankUpdate(byte bank);
 };
 

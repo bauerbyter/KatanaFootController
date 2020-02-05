@@ -33,7 +33,7 @@ bool BankButton::changed()
     return false;
 }
 
-void BankButton::update(byte value)
+void BankButton::update(int value)
 {
     if (value > 4)
     {

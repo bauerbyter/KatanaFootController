@@ -36,7 +36,7 @@ bool EffectButton::changed()
     return false;
 }
 
-void EffectButton::update(byte value)
+void EffectButton::update(int value)
 {
     if (value == 0)
     {

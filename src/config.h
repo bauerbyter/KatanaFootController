@@ -21,6 +21,8 @@
 #define LED_BOOST RgbColor(255, 0, 0)
 #define LED_LOOP RgbColor(0, 150, 150)
 #define LED_MUTE RgbColor(255, 0, 0)
+#define LED_TAP RgbColor(0, 40, 40)
+#define TAP_LED 14
 
 #define LED_DEFAULT RgbColor(0, 120, 120)
 

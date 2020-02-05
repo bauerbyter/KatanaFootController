@@ -11,7 +11,7 @@ TapButton::TapButton(byte pin,
                                                             1,
                                                             1,
                                                             TAP_BUTTON,
-                                                            false)
+                                                            true)
 {
 }
 
@@ -51,36 +51,12 @@ bool TapButton::calculateValue()
     return true;
 }
 
-
-void TapButton::update(byte value)
+void TapButton::update(int value)
 {
-    /*if (value == 0)
-    {
-        currentValue = firstValue;
-    }
-    else
-    {
-        currentValue = secondValue;
-    }*/
+    this->currentValue = 60000 / value;
 }
 
 Led TapButton::getLed(byte value)
 {
-
-    /*if (value == 1)
-    {
-        return Led{this->ledPosition, LED_EFFECT_GREEN};
-    }
-    else if (value == 2)
-    {
-        return Led{this->ledPosition, LED_EFFECT_RED};
-    }
-    else if (value == 3)
-    {
-        return Led{this->ledPosition, LED_EFFECT_YELLOW};
-    }
-    else
-    {*/
-        return Led{this->ledPosition, LED_OFF};
-    //}
+    return Led{this->ledPosition, LED_OFF};
 }

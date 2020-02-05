@@ -1,6 +1,6 @@
 #include "main.h"
 
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #ifdef DEBUG_MODE
 #define DEBUG(x) Serial.print(x)
 #define DEBUGLN(x) Serial.println(x)
@@ -50,7 +50,9 @@ Control *controller[CONTROL_SIZE] = {
     &control14,
     &control15};
 
+Ticker tapTimer(blinkTapLed, 5000);
 bool isEffectBankPressed = false;
+bool isTapLedOn = false;
 
 void setup()
 {
@@ -112,7 +114,7 @@ void loop()
       }
     }
   }
-
+  tapTimer.update();
   updateKatana();
 }
 
@@ -129,8 +131,20 @@ void handleIncomingData(unsigned long parameter, byte data)
   {
     if (controller[i]->paramaterMatch(parameter))
     {
-      controller[i]->update(data);
-      setLed(controller[i]->getLed(data));
+      if (parameter == PARA_TAP_TIME)
+      {
+        int calc = (katana.dataOut2 * 128) + data;
+
+        controller[i]->update(calc);
+        tapTimer.interval(calc / 2);
+        tapTimer.start();
+      }
+      else
+      {
+        controller[i]->update(data);
+        setLed(controller[i]->getLed(data));
+      }
+
       if (controller[i]->getClassType() == CHANNEL_BUTTON)
       {
         needUpdate = true;
@@ -154,7 +168,7 @@ void setLed(Led led)
 
 void clearAllLeds()
 {
-  for (int i = 0; i < CONTROL_SIZE; i++)
+  for (byte i = 0; i < CONTROL_SIZE; i++)
   {
     setLed(Led{i, LED_OFF});
   }
@@ -163,7 +177,7 @@ void clearAllLeds()
 void sendTap(int index)
 {
   uint8_t dd_time_msb = ((60000 / controller[index]->getValue()) / 128);
-  uint8_t dd_time_lsb = (60000 / controller[index]->getValue()) - (dd_time_msb * 128);
+  uint8_t dd_time_lsb = ((60000 / controller[index]->getValue()) - (dd_time_msb * 128));
   uint8_t data[2];
   data[0] = {dd_time_msb};
   data[1] = {dd_time_lsb};
@@ -284,4 +298,17 @@ void connectKatana()
     }
     delay(100);
   }
+}
+
+void blinkTapLed()
+{
+  if (isTapLedOn)
+  {
+    setLed(Led{TAP_LED, LED_OFF});
+  }
+  else
+  {
+    setLed(Led{TAP_LED, LED_TAP});
+  }
+  isTapLedOn = !isTapLedOn;
 }

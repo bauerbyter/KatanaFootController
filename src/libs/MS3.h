@@ -256,7 +256,7 @@ public: //private:
             {
                 dataOut2 = (byte)data[dataLength - 4];
             } // second byte for 2 byte received data
-            if (dataLength == 29)
+            /*if (dataLength == 29)
             {
                 bstr_G_type = (byte)data[dataLength - 17];
                 bstr_R_type = (byte)data[dataLength - 16];
@@ -273,7 +273,7 @@ public: //private:
                 rev_G_type = (byte)data[dataLength - 5];
                 rev_R_type = (byte)data[dataLength - 4];
                 rev_Y_type = (byte)data[dataLength - 3];
-            }
+            }*/
 
             // If the data is one byte longer, add 128 to the return value for a full byte range.
             if (dataLength == 16 && data[dataLength - 4] == 0x01)

@@ -60,7 +60,7 @@ public:
 
   virtual Led getLed(byte value) = 0;
   virtual bool changed() = 0;
-  virtual void update(byte value) = 0;
+  virtual void update(int value) = 0;
 };
 
 #endif

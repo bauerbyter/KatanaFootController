@@ -12,7 +12,7 @@ public:
                byte ledPosition);
     virtual Led getLed(byte value) override;
     virtual bool changed() override;
-    virtual void update(byte value) override;
+    virtual void update(int value) override;
 };
 
 #endif

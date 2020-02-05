@@ -33,7 +33,7 @@ bool EffectBankButton::changed()
     return false;
 }
 
-void EffectBankButton::update(byte value)
+void EffectBankButton::update(int value)
 {
     if (value == 1)
     {

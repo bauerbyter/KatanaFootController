@@ -31,7 +31,7 @@ bool ChannelButton::changed()
 }
 
 
-void ChannelButton::update(byte value)
+void ChannelButton::update(int value)
 {
     if (value == this->firstValue)
     {

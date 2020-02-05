@@ -5,8 +5,9 @@
 #include <NeoPixelBrightnessBus.h>
 #include "sysex.h"
 #include "config.h"
+#include "Ticker.h"
 
-//#define MS3_DEBUG_MODE
+#define MS3_DEBUG_MODE
 #include "./libs/MS3.h"
 #include <JC_Button.h>
 
@@ -27,5 +28,6 @@ void setLed(Led led);
 void sendTap(int index);
 void bankChange(int index);
 bool effectButtonPressed(int index);
+void blinkTapLed();
 
 #endif

@@ -58,7 +58,7 @@ bool CCButton::changed()
     return false;
 }
 
-void CCButton::update(byte value)
+void CCButton::update(int value)
 {
     if (value == secondValue)
     {
