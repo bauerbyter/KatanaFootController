@@ -5,6 +5,7 @@ This is an approach for an simple USB Controller for the Katana to replace and e
 It is possibel to config every switch to whatever function you like.
 
 At the moment this is just for the MK2 (mkii), but its easy changeable to MK1 (mki).
+Contribution is gladly seen.
 
 ## Status
 ### Working
