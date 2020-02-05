@@ -1,6 +1,6 @@
 # Katana FootController
 
-## Work still in Progress 
+## Work still in Progress but useable
 This is an approach for an simple USB Controller for the Katana to replace and expand the GA FC.
 It is possibel to config every switch to whatever function you like.
 
@@ -12,16 +12,15 @@ Contribution is gladly seen.
 - Change Channel
 - Bank A/B
 - Switch on/off Effect (also get Effect-Type/Color)
+- Switch Effect Type (red/green/yellow)
 - Solo Boost
 - Send/Return on/off
 - Mute
-- Send Tap 
-- Switch Effect Type (red/green/yellow)
+- Send and Show Tap (its not 100% in sync but very close, good enough for me :-) )
 
 ### Missing
 
-- Show Tap
-- Exp-Pedal enhancement
+- Exp-Pedal
 
 ## Other Sources
 ### Code
