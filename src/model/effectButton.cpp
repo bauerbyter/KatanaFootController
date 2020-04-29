@@ -1,4 +1,4 @@
-#include "EffectButton.h"
+#include "effectButton.h"
 
 EffectButton::EffectButton(byte pin,
                            byte ledPosition,

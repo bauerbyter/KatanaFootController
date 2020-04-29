@@ -1,4 +1,4 @@
-#include "CCButton.h"
+#include "ccButton.h"
 
 CCButton::CCButton(byte pin,
                    byte ledPosition,
